@@ -8,9 +8,11 @@ class Staff(User):
 
     def view_combined_roster():
         #print roster using something like pipy.tabulate
+        return
     
     def clock_in(self, assignmentID, clockInTime):
         #initialize new report object
+        return
     
     def clock_out(self, assignmentID, clockOutTime): 
         self.clockOutTime = clockOutTime

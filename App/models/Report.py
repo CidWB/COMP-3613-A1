@@ -15,7 +15,7 @@ class Report(db.Model):
         return{
             'reportID': self.reportID,
             'assignmentID': self.assignmentID,
-            'clockInTime': self.clockInTime
+            'clockInTime': self.clockInTime,
             'clockOutTime': self.clockOutTime
         }
 

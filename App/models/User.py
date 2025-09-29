@@ -1,20 +1,23 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
+from App.models import User
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username =  db.Column(db.String(20), nullable=False, unique=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, email):
         self.username = username
         self.set_password(password)
+        self.email = email
 
     def get_json(self):
         return{
             'id': self.id,
-            'username': self.username
+            'username': self.username,
+            'email': self.email
         }
 
     def set_password(self, password):
