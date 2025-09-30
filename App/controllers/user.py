@@ -1,4 +1,4 @@
-from App.models import User
+from App.models import User, Shift, Report
 from App.database import db
 
 username = "tom"
@@ -6,9 +6,6 @@ password = "bobpass"
 email = "bob@e.x"
 
 def create_user(username, password, email):
-    #db.session.add(newuser)
-    #db.session.commit()
-    #return newuser
     newUser = User(username, password, email)
     db.session.add(newUser)
     db.session.commit()
@@ -40,3 +37,30 @@ def update_user(id, username):
         db.session.commit()
         return True
     return None
+    
+def clock_in(userID, clockInTime):
+    #initialize new report object
+    if not user.assignments: #no assigned shifts
+        return None
+    user = db.query(User).filter(User.userID == userID)
+    shiftMatch = db.query(Shift).filter(Shift.startTime <= clockInTime, clockInTime < Shift.endTime).one()
+    
+    for assignment in user.assignments:
+            for shift in assignment.shifts: #this list cannot be null since it is a composition
+                    if shift == shiftMatch:
+                            return assignment.assignmentID
+
+    return None
+    
+def clock_out(userID, clockOutTime): 
+    user = db.query(User).filter(User.userID == userID)
+    reportID = db.query(Report).filter(Report.assignmentID == assignmentID).one()
+    for assignment in user.assignments:
+        if reportID == assignment.assignmentID:
+                return assignment.assignmentID
+    
+    return None
+    
+def view_combined_roster():
+    #print roster using something like pipy.tabulate
+    return

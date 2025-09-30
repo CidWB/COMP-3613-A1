@@ -6,6 +6,7 @@ class Shift(db.Model):
     date =  db.Column(db.Date, nullable=False)
     startTime =  db.Column(db.Time, nullable=False)
     endTime =  db.Column(db.Time, nullable=False)
+    assignments = db.relationship('Assignment', backref='Shift', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, date, startTime, endTime):
         self.date = date

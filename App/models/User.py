@@ -1,12 +1,13 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
-from App.models import User
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, primary_key=True)
     username =  db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    assignments = db.relationship('Assignment', backref='User', lazy=True, cascade="all, delete-orphan")
+
 
     def __init__(self, username, password, email):
         self.username = username
@@ -15,7 +16,7 @@ class User(db.Model):
 
     def get_json(self):
         return{
-            'id': self.id,
+            'id': self.userID,
             'username': self.username,
             'email': self.email
         }

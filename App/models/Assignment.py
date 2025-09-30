@@ -1,5 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
+import datetime
 
 class Assignment(db.Model):
     assignmentID = db.Column(db.Integer, primary_key=True)
@@ -16,4 +17,8 @@ class Assignment(db.Model):
             'staffID' : self.staffID,
             'shiftID' : self.shiftID
         }
+    
+    @staticmethod
+    def checkAssignment(staffID, ):
+        pass
 

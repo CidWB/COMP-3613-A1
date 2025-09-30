@@ -1,8 +1,9 @@
 import click, pytest, sys
 from flask.cli import with_appcontext, AppGroup
+import datetime
 
 from App.database import db, get_migrate
-from App.models import User
+from App.models import User, Report
 from App.main import create_app
 from App.controllers.initialize import initialize
 from App.controllers.user import *
@@ -48,6 +49,32 @@ def list_user_command(format):
         print(get_all_users())
     else:
         print(get_all_users_json())
+
+#command : flask user userID clockin
+@user_cli.command("clockin", help="Clocks into shift if assigned to user")
+@click.argument("userID")
+def user_clockin_command(userID):
+    current_datetime = datetime.now()
+    assignmentID = clock_in(userID, current_datetime)
+    if assignmentID != None: #uses current system time to clock user in
+        print(f'{username} clocked in at {current_datetime.strftime("%I:%M %p")}')
+        db.session.add(Report(assignmentID, current_datetime))
+        db.session.commit()
+    else:
+        print('No assigned shift at this time. Please check roster of all available shifts (hint: flask check_roster)')
+
+#command : flask user userID clockout
+@user_cli.command("clockout", help="Clocks out of shift for user")
+@click.argument("userID")
+def user_clockin_command(userID):
+    current_datetime = datetime.now()
+    assignmentID = clock_out(userID, current_datetime)
+    if assignmentID != None: #uses current system time to clock user in
+        print(f'{username} clocked out at {current_datetime.strftime("%I:%M %p")}')
+        db.session.add(Report(assignmentID, current_datetime))
+        db.session.commit()
+    else:
+        print('User is not working a shift. (hint: flask check_roster)')
 
 app.cli.add_command(user_cli) # add the group to the cli
 
