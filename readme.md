@@ -69,11 +69,12 @@ You just need create a manager command function, for example:
 
 user_cli = AppGroup('user', help='User object commands')
 
-@user_cli.cli.command("create-user")
-@click.argument("username")
-@click.argument("password")
-def create_user_command(username, password):
-    create_user(username, password)
+@user_cli.command("create", help="Creates a user")
+@click.argument("username", default="rob")
+@click.argument("password", default="robpass")
+@click.argument("email", default="rob@example.com")
+def create_user_command(username, password, email):
+    create_user(username, password, email)
     print(f'{username} created!')
 
 app.cli.add_command(user_cli) # add the group to the cli
@@ -83,7 +84,7 @@ app.cli.add_command(user_cli) # add the group to the cli
 Then execute the command invoking with flask cli with command name and the relevant parameters
 
 ```bash
-$ flask user create bob bobpass
+$ flask user create john johnpass john@example.com
 ```
 
 
